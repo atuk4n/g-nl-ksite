@@ -950,103 +950,100 @@
     const timeText = document.getElementById("timeText");
 
     // Tanışma tarihi (1 Aralık 2023)
-    const firstDay = new Date(2025, 5, 28, 17, 0);  // Ay 0'dan başlar: 11 = Aralık
-    // Mesaj gösterimini güncelle
-    function updateMessage() {
-      const now = new Date();
-      const hour = now.getHours();
-      // Düzeltilmiş gün indeksi hesaplama
-      const dayIndex = (now.getDate() - 1) % messages.length;
-      const today = messages[dayIndex];
+    const firstDay = new Date(2025, 5, 28, 17, 0); // Ay 0'dan başlar: 5 = Haziran
 
-      let selected = today.night;
-      if (hour >= 5 && hour < 12) {
-        selected = today.morning;
-      } else if (hour >= 12 && hour < 17) {
-        selected = today.noon;
-      } else if (hour >= 17 && hour <= 21) {
-        selected = today.evening;
-      }
+// Mesaj gösterimini güncelle
+function updateMessage() {
+  const now = new Date();
+  const hour = now.getHours();
+  const dayIndex = (now.getDate() - 1) % messages.length;
+  const today = messages[dayIndex];
 
-      mainMessage.textContent = selected[0];
-      translationText.textContent = `"${selected[1]}"`;
-      languageName.textContent = `Bugünün Dili: ${today.lang}`;
-
-      // "Seni seviyorum" içeren mesajları kaydet
-      saveLoveMessage(today, selected[1]);
-    }
-
-    // "Seni seviyorum" mesajlarını kaydet
-    function saveLoveMessage(today, message) {
-      if (message.includes("Seni seviyorum")) {
-        const todayKey = new Date().toISOString().split("T")[0];
-        const saved = JSON.parse(localStorage.getItem("loveHistory") || "[]");
-        
-        // Aynı gün daha önce eklenmediyse
-        if (!saved.find(e => e.date === todayKey)) {
-          saved.push({ 
-            date: todayKey, 
-            message: message, 
-            lang: today.lang,
-            timestamp: new Date().getTime()
-          });
-          localStorage.setItem("loveHistory", JSON.stringify(saved));
-        }
-      }
-    }
-
-    // Geçmiş mesajları göster
-    function showHistory() {
-      const history = JSON.parse(localStorage.getItem("loveHistory") || "[]");
-      
-      // Tarihe göre ters sırala (en yeni en üstte)
-      history.sort((a, b) => b.timestamp - a.timestamp);
-      
-      if (history.length === 0) {
-        historyContent.innerHTML = `<div class="empty-history">Henüz hiç "Seni seviyorum" mesajı kaydedilmedi</div>`;
-      } else {
-        let html = "";
-        history.forEach(entry => {
-          // Tarihi formatla (GG/AA/YYYY)
-          const dateParts = entry.date.split("-");
-          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-          
-          html += `
-            <div class="history-item">
-              <div class="history-date">
-                <i class="far fa-calendar-alt"></i>
-                ${formattedDate}
-                <span class="history-lang">${entry.lang}</span>
-              </div>
-              <div class="history-message">${entry.message}</div>
-            </div>
-          `;
-        });
-        historyContent.innerHTML = html;
-      }
-      
-      historyBox.classList.toggle("show");
-      // Diğer açık bölümleri kapat
-      timeTogether.style.display = "none";
-      spotifyContainer.classList.remove("show");
-    }
-
-    // Geçmişi temizle
-    function clearHistory() {
-      if (confirm("Tüm geçmiş mesajlar silinecek. Emin misiniz?")) {
-        localStorage.removeItem("loveHistory");
-        showHistory();
-      }
-    }
-    
-    // KODUN EN BAŞINA (diğer fonksiyonlardan önce) EKLEYİN:
-window.addEventListener('beforeunload', function() {
-  if (timeInterval) {
-    clearInterval(timeInterval);
+  let selected = today.night;
+  if (hour >= 5 && hour < 12) {
+    selected = today.morning;
+  } else if (hour >= 12 && hour < 17) {
+    selected = today.noon;
+  } else if (hour >= 17 && hour <= 21) {
+    selected = today.evening;
   }
-});
-    // Beraber geçen süreyi hesapla ve göster
-    // YENİ FONKSİYON (EKLEYİN):
+
+  mainMessage.textContent = selected[0];
+  translationText.textContent = `"${selected[1]}"`;
+  languageName.textContent = `Bugünün Dili: ${today.lang}`;
+
+  // "Seni seviyorum" içeren mesajları kaydet
+  saveLoveMessage(today, selected[0]);
+}
+
+// "Seni seviyorum" mesajlarını kaydet
+function saveLoveMessage(today, originalMessage) {
+  // Sadece gece mesajlarını ("Seni seviyorum" içeren) kaydet
+  const nightMessage = today.night[0];
+  
+  // Eğer mesaj gece mesajıysa kaydet
+  if (originalMessage === nightMessage) {
+    const todayKey = new Date().toISOString().split("T")[0];
+    const saved = JSON.parse(localStorage.getItem("loveHistory") || "[]");
+    
+    // Aynı gün daha önce eklenmediyse
+    if (!saved.find(e => e.date === todayKey)) {
+      saved.push({ 
+        date: todayKey, 
+        message: originalMessage,
+        lang: today.lang,
+        timestamp: new Date().getTime()
+      });
+      localStorage.setItem("loveHistory", JSON.stringify(saved));
+    }
+  }
+}
+
+// Geçmiş mesajları göster
+function showHistory() {
+  const history = JSON.parse(localStorage.getItem("loveHistory") || "[]");
+  
+  // Tarihe göre ters sırala (en yeni en üstte)
+  history.sort((a, b) => b.timestamp - a.timestamp);
+  
+  if (history.length === 0) {
+    historyContent.innerHTML = `<div class="empty-history">Henüz hiç "Seni seviyorum" mesajı kaydedilmedi</div>`;
+  } else {
+    let html = "";
+    history.forEach(entry => {
+      // Tarihi formatla (GG/AA/YYYY)
+      const dateParts = entry.date.split("-");
+      const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+      
+      html += `
+        <div class="history-item">
+          <div class="history-date">
+            <i class="far fa-calendar-alt"></i>
+            ${formattedDate}
+            <span class="history-lang">${entry.lang}</span>
+          </div>
+          <div class="history-message">${entry.message}</div>
+        </div>
+      `;
+    });
+    historyContent.innerHTML = html;
+  }
+  
+  historyBox.classList.toggle("show");
+  // Diğer açık bölümleri kapat
+  timeTogether.style.display = "none";
+  spotifyContainer.classList.remove("show");
+}
+
+// Geçmişi temizle
+function clearHistory() {
+  if (confirm("Tüm geçmiş mesajlar silinecek. Emin misiniz?")) {
+    localStorage.removeItem("loveHistory");
+    showHistory();
+  }
+}
+
+// Beraber geçen süreyi hesapla ve göster
 let timeInterval;
 
 function showTimeTogether() {
@@ -1071,43 +1068,50 @@ function showTimeTogether() {
   historyBox.classList.remove("show");
   spotifyContainer.classList.remove("show");
 }
-    
-    // Spotify playlistini göster
-    function showSpotifyPlaylist() {
-      spotifyContainer.classList.toggle("show");
-      
-      // Diğer açık bölümleri kapat
-      historyBox.classList.remove("show");
-      timeTogether.style.display = "none";
-    }
 
-    // Sayfa yüklendiğinde mesajı güncelle
-    updateMessage();
+// Spotify playlistini göster
+function showSpotifyPlaylist() {
+  spotifyContainer.classList.toggle("show");
+  
+  // Diğer açık bölümleri kapat
+  historyBox.classList.remove("show");
+  timeTogether.style.display = "none";
+}
 
-    // Olay dinleyicileri
-    historyBtn.addEventListener("click", showHistory);
-    refreshBtn.addEventListener("click", updateMessage);
-    clearHistoryBtn.addEventListener("click", clearHistory);
-    spotifyBtn.addEventListener("click", showSpotifyPlaylist);
-    spotifyCloseBtn.addEventListener("click", () => spotifyContainer.classList.remove("show"));
-    timeBtn.addEventListener("click", showTimeTogether);
+// Sayfa yüklendiğinde mesajı güncelle
+updateMessage();
 
-    // Dışarı tıklanınca bölümleri kapat
-    document.addEventListener("click", (e) => {
-      // Geçmiş kutusu
-      if (!historyBox.contains(e.target) && 
-          e.target !== historyBtn && 
-          historyBox.classList.contains("show")) {
-        historyBox.classList.remove("show");
-      }
-      
-      // Spotify kutusu
-      if (!spotifyContainer.contains(e.target) && 
-          e.target !== spotifyBtn && 
-          spotifyContainer.classList.contains("show")) {
-        spotifyContainer.classList.remove("show");
-      }
-    });
+// Olay dinleyicileri
+historyBtn.addEventListener("click", showHistory);
+refreshBtn.addEventListener("click", updateMessage);
+clearHistoryBtn.addEventListener("click", clearHistory);
+spotifyBtn.addEventListener("click", showSpotifyPlaylist);
+spotifyCloseBtn.addEventListener("click", () => spotifyContainer.classList.remove("show"));
+timeBtn.addEventListener("click", showTimeTogether);
+
+// Dışarı tıklanınca bölümleri kapat
+document.addEventListener("click", (e) => {
+  // Geçmiş kutusu
+  if (!historyBox.contains(e.target) && 
+      e.target !== historyBtn && 
+      historyBox.classList.contains("show")) {
+    historyBox.classList.remove("show");
+  }
+  
+  // Spotify kutusu
+  if (!spotifyContainer.contains(e.target) && 
+      e.target !== spotifyBtn && 
+      spotifyContainer.classList.contains("show")) {
+    spotifyContainer.classList.remove("show");
+  }
+});
+
+// Sayfa kapatılırken zamanlayıcıyı temizle
+window.addEventListener('beforeunload', function() {
+  if (timeInterval) {
+    clearInterval(timeInterval);
+  }
+});
   </script>
 </body>
 </html>
