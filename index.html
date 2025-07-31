@@ -116,6 +116,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      position: relative;
     }
 
     .message {
@@ -326,6 +327,7 @@
       text-align: center;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
       animation: fadeIn 0.8s ease;
+      display: none;
     }
     
     .time-together h3 {
@@ -351,11 +353,6 @@
       border-radius: 18px;
       overflow: hidden;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-      display: none;
-    }
-    
-    .spotify-container.show {
-      display: block;
       animation: fadeIn 0.8s ease;
     }
     
@@ -383,6 +380,40 @@
       font-size: 1.2rem;
     }
 
+    /* Yenile butonu için yeni stil */
+    .refresh-small {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    
+    .refresh-small:hover {
+      background: #ff4d88;
+      transform: rotate(360deg);
+    }
+    
+    .refresh-small:hover i {
+      color: white;
+    }
+    
+    .refresh-small i {
+      color: #ff4d88;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
     @media (max-width: 480px) {
       h1 {
         font-size: 2rem;
@@ -408,6 +439,13 @@
       .time-text {
         font-size: 1rem;
       }
+      
+      .refresh-small {
+        top: 5px;
+        right: 5px;
+        width: 32px;
+        height: 32px;
+      }
     }
 
     @media (max-width: 350px) {
@@ -428,6 +466,11 @@
   </div>
   
   <div class="card">
+    <!-- Mesajı yenile butonu (ufak) -->
+    <button class="refresh-small" id="smallRefreshBtn">
+      <i class="fas fa-sync-alt"></i>
+    </button>
+    
     <div class="message-container">
       <div class="message" id="mainMessage">...</div>
       <div class="translation" id="translationText"></div>
@@ -441,20 +484,22 @@
     </div>
   </div>
   
+  <!-- Spotify bölümü doğrudan görünür olacak -->
+  <div class="spotify-container" id="spotifyContainer">
+    <div class="spotify-header">
+      <div class="spotify-title">
+        <i class="fab fa-spotify"></i>
+        Bizim Şarkılarımız
+      </div>
+      <button class="spotify-close" id="spotifyCloseBtn">&times;</button>
+    </div>
+    <iframe style="border-radius:0 0 18px 18px" src="https://open.spotify.com/embed/playlist/4S2v4JMYIsxuxBuogzuK0U?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+  
   <div class="controls">
     <button class="btn btn-primary" id="historyBtn">
       <i class="fas fa-history"></i>
       Geçmiş "Seni Seviyorum" Mesajları
-    </button>
-    
-    <button class="btn btn-secondary" id="refreshBtn">
-      <i class="fas fa-sync-alt"></i>
-      Mesajı Yenile
-    </button>
-    
-    <button class="btn btn-spotify" id="spotifyBtn">
-      <i class="fab fa-spotify"></i>
-      Özel Çalma Listemiz
     </button>
     
     <button class="btn btn-time" id="timeBtn">
@@ -472,21 +517,9 @@
   </div>
   
   <!-- Tanıştığımızdan beri geçen süre bölümü -->
-  <div class="time-together" id="timeTogether" style="display: none;">
+  <div class="time-together" id="timeTogether">
     <h3><i class="fas fa-heartbeat"></i> Beraber Geçen Süremiz</h3>
     <div class="time-text" id="timeText"></div>
-  </div>
-  
-  <!-- Spotify playlist bölümü -->
-  <div class="spotify-container" id="spotifyContainer">
-    <div class="spotify-header">
-      <div class="spotify-title">
-        <i class="fab fa-spotify"></i>
-        Bizim Şarkılarımız
-      </div>
-      <button class="spotify-close" id="spotifyCloseBtn">&times;</button>
-    </div>
-    <iframe style="border-radius:0 0 18px 18px" src="https://open.spotify.com/embed/playlist/2HQax7LhCfKC6RDn0kj5lc?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
   </div>
   
   <div class="footer">
@@ -930,188 +963,172 @@
     evening: ["Оройн мэнд, Эла!", "İyi akşamlar Ela!"],
     night: ["Сайхан амраарай, Эла. Би чамд хайртай ❤️", "İyi geceler Ela. Seni seviyorum ❤️"]
   }
-]
+   ]
     ];
 
+    // Tanışma tarihi (28 Haziran 2025)
+    const firstDay = new Date(2025, 5, 28, 17, 0);  // Ay 0'dan başlar: 5 = Haziran
+    
     // DOM Elementleri
     const mainMessage = document.getElementById("mainMessage");
     const translationText = document.getElementById("translationText");
     const languageName = document.getElementById("languageName");
     const historyBtn = document.getElementById("historyBtn");
-    const refreshBtn = document.getElementById("refreshBtn");
+    const smallRefreshBtn = document.getElementById("smallRefreshBtn");
     const historyBox = document.getElementById("historyBox");
     const historyContent = document.getElementById("historyContent");
     const clearHistoryBtn = document.getElementById("clearHistoryBtn");
-    const spotifyBtn = document.getElementById("spotifyBtn");
-    const spotifyContainer = document.getElementById("spotifyContainer");
-    const spotifyCloseBtn = document.getElementById("spotifyCloseBtn");
     const timeBtn = document.getElementById("timeBtn");
     const timeTogether = document.getElementById("timeTogether");
     const timeText = document.getElementById("timeText");
+    const spotifyCloseBtn = document.getElementById("spotifyCloseBtn");
 
-    // Tanışma tarihi (1 Aralık 2023)
-    const firstDay = new Date(2025, 5, 28, 17, 0); // Ay 0'dan başlar: 5 = Haziran
+    // Mesaj gösterimini güncelle
+    function updateMessage() {
+      const now = new Date();
+      const hour = now.getHours();
+      const dayIndex = (now.getDate() - 1) % messages.length;
+      const today = messages[dayIndex];
 
-// Mesaj gösterimini güncelle
-function updateMessage() {
-  const now = new Date();
-  const hour = now.getHours();
-  const dayIndex = (now.getDate() - 1) % messages.length;
-  const today = messages[dayIndex];
+      let selected = today.night;
+      if (hour >= 5 && hour < 12) {
+        selected = today.morning;
+      } else if (hour >= 12 && hour < 17) {
+        selected = today.noon;
+      } else if (hour >= 17 && hour <= 21) {
+        selected = today.evening;
+      }
 
-  let selected = today.night;
-  if (hour >= 5 && hour < 12) {
-    selected = today.morning;
-  } else if (hour >= 12 && hour < 17) {
-    selected = today.noon;
-  } else if (hour >= 17 && hour <= 21) {
-    selected = today.evening;
-  }
+      mainMessage.textContent = selected[0];
+      translationText.textContent = `"${selected[1]}"`;
+      languageName.textContent = `Bugünün Dili: ${today.lang}`;
 
-  mainMessage.textContent = selected[0];
-  translationText.textContent = `"${selected[1]}"`;
-  languageName.textContent = `Bugünün Dili: ${today.lang}`;
-
-  // "Seni seviyorum" içeren mesajları kaydet
-  saveLoveMessage(today, selected[0]);
-}
-
-// "Seni seviyorum" mesajlarını kaydet
-function saveLoveMessage(today, originalMessage) {
-  // Sadece gece mesajlarını ("Seni seviyorum" içeren) kaydet
-  const nightMessage = today.night[0];
-  
-  // Eğer mesaj gece mesajıysa kaydet
-  if (originalMessage === nightMessage) {
-    const todayKey = new Date().toISOString().split("T")[0];
-    const saved = JSON.parse(localStorage.getItem("loveHistory") || "[]");
-    
-    // Aynı gün daha önce eklenmediyse
-    if (!saved.find(e => e.date === todayKey)) {
-      saved.push({ 
-        date: todayKey, 
-        message: originalMessage,
-        lang: today.lang,
-        timestamp: new Date().getTime()
-      });
-      localStorage.setItem("loveHistory", JSON.stringify(saved));
+      // "Seni seviyorum" içeren mesajları kaydet
+      saveLoveMessage(today, selected[0]);
     }
-  }
-}
 
-// Geçmiş mesajları göster
-function showHistory() {
-  const history = JSON.parse(localStorage.getItem("loveHistory") || "[]");
-  
-  // Tarihe göre ters sırala (en yeni en üstte)
-  history.sort((a, b) => b.timestamp - a.timestamp);
-  
-  if (history.length === 0) {
-    historyContent.innerHTML = `<div class="empty-history">Henüz hiç "Seni seviyorum" mesajı kaydedilmedi</div>`;
-  } else {
-    let html = "";
-    history.forEach(entry => {
-      // Tarihi formatla (GG/AA/YYYY)
-      const dateParts = entry.date.split("-");
-      const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+    // "Seni seviyorum" mesajlarını kaydet
+    function saveLoveMessage(today, originalMessage) {
+      // Sadece gece mesajlarını ("Seni seviyorum" içeren) kaydet
+      const nightMessage = today.night[0];
       
-      html += `
-        <div class="history-item">
-          <div class="history-date">
-            <i class="far fa-calendar-alt"></i>
-            ${formattedDate}
-            <span class="history-lang">${entry.lang}</span>
-          </div>
-          <div class="history-message">${entry.message}</div>
-        </div>
-      `;
+      // Eğer mesaj gece mesajıysa kaydet
+      if (originalMessage === nightMessage) {
+        const todayKey = new Date().toISOString().split("T")[0];
+        const saved = JSON.parse(localStorage.getItem("loveHistory") || "[]");
+        
+        // Aynı gün daha önce eklenmediyse
+        if (!saved.find(e => e.date === todayKey)) {
+          saved.push({ 
+            date: todayKey, 
+            message: originalMessage,
+            lang: today.lang,
+            timestamp: new Date().getTime()
+          });
+          localStorage.setItem("loveHistory", JSON.stringify(saved));
+        }
+      }
+    }
+
+    // Geçmiş mesajları göster
+    function showHistory() {
+      const history = JSON.parse(localStorage.getItem("loveHistory") || "[]");
+      
+      // Tarihe göre ters sırala (en yeni en üstte)
+      history.sort((a, b) => b.timestamp - a.timestamp);
+      
+      if (history.length === 0) {
+        historyContent.innerHTML = `<div class="empty-history">Henüz hiç "Seni seviyorum" mesajı kaydedilmedi</div>`;
+      } else {
+        let html = "";
+        history.forEach(entry => {
+          // Tarihi formatla (GG/AA/YYYY)
+          const dateParts = entry.date.split("-");
+          const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+          
+          html += `
+            <div class="history-item">
+              <div class="history-date">
+                <i class="far fa-calendar-alt"></i>
+                ${formattedDate}
+                <span class="history-lang">${entry.lang}</span>
+              </div>
+              <div class="history-message">${entry.message}</div>
+            </div>
+          `;
+        });
+        historyContent.innerHTML = html;
+      }
+      
+      historyBox.classList.toggle("show");
+      // Diğer açık bölümleri kapat
+      timeTogether.style.display = "none";
+    }
+
+    // Geçmişi temizle
+    function clearHistory() {
+      if (confirm("Tüm geçmiş mesajlar silinecek. Emin misiniz?")) {
+        localStorage.removeItem("loveHistory");
+        showHistory();
+      }
+    }
+    
+    // Beraber geçen süreyi hesapla ve göster
+    let timeInterval;
+
+    function showTimeTogether() {
+      if (timeInterval) clearInterval(timeInterval);
+      
+      function updateTime() {
+        const now = new Date();
+        const diffTime = Math.abs(now - firstDay);
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+        const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
+        const diffMonths = Math.floor(diffDays / 30);
+        const remainingDays = diffDays % 30;
+
+        timeText.innerHTML = `Bitanem , ${diffMonths>0?diffMonths+' ay ':''}${remainingDays} gün ${diffHours} saat ${diffMinutes} dakika ${diffSeconds} saniyedir senin için atıyor haberin olsun yaniii 💖`;
+      }
+      
+      updateTime();
+      timeInterval = setInterval(updateTime, 1000);
+      timeTogether.style.display = "block";
+      historyBox.classList.remove("show");
+    }
+    
+    // Spotify playlistini kapat
+    function closeSpotifyPlaylist() {
+      spotifyContainer.style.display = "none";
+    }
+
+    // Sayfa yüklendiğinde mesajı güncelle
+    updateMessage();
+
+    // Olay dinleyicileri
+    historyBtn.addEventListener("click", showHistory);
+    smallRefreshBtn.addEventListener("click", updateMessage);
+    clearHistoryBtn.addEventListener("click", clearHistory);
+    timeBtn.addEventListener("click", showTimeTogether);
+    spotifyCloseBtn.addEventListener("click", closeSpotifyPlaylist);
+
+    // Dışarı tıklanınca bölümleri kapat
+    document.addEventListener("click", (e) => {
+      // Geçmiş kutusu
+      if (!historyBox.contains(e.target) && 
+          e.target !== historyBtn && 
+          historyBox.classList.contains("show")) {
+        historyBox.classList.remove("show");
+      }
     });
-    historyContent.innerHTML = html;
-  }
-  
-  historyBox.classList.toggle("show");
-  // Diğer açık bölümleri kapat
-  timeTogether.style.display = "none";
-  spotifyContainer.classList.remove("show");
-}
 
-// Geçmişi temizle
-function clearHistory() {
-  if (confirm("Tüm geçmiş mesajlar silinecek. Emin misiniz?")) {
-    localStorage.removeItem("loveHistory");
-    showHistory();
-  }
-}
-
-// Beraber geçen süreyi hesapla ve göster
-let timeInterval;
-
-function showTimeTogether() {
-  if (timeInterval) clearInterval(timeInterval);
-  
-  function updateTime() {
-    const now = new Date();
-    const diffTime = Math.abs(now - firstDay);
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    const diffHours = Math.floor((diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
-    const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
-    const diffMonths = Math.floor(diffDays / 30);
-    const remainingDays = diffDays % 30;
-
-    timeText.innerHTML = `Bitanem , ${diffMonths>0?diffMonths+' ay ':''}${remainingDays} gün ${diffHours} saat ${diffMinutes} dakika ${diffSeconds} saniyedir senin için atıyor haberin olsun yaniii 💖`;
-  }
-  
-  updateTime();
-  timeInterval = setInterval(updateTime, 1000);
-  timeTogether.style.display = "block";
-  historyBox.classList.remove("show");
-  spotifyContainer.classList.remove("show");
-}
-
-// Spotify playlistini göster
-function showSpotifyPlaylist() {
-  spotifyContainer.classList.toggle("show");
-  
-  // Diğer açık bölümleri kapat
-  historyBox.classList.remove("show");
-  timeTogether.style.display = "none";
-}
-
-// Sayfa yüklendiğinde mesajı güncelle
-updateMessage();
-
-// Olay dinleyicileri
-historyBtn.addEventListener("click", showHistory);
-refreshBtn.addEventListener("click", updateMessage);
-clearHistoryBtn.addEventListener("click", clearHistory);
-spotifyBtn.addEventListener("click", showSpotifyPlaylist);
-spotifyCloseBtn.addEventListener("click", () => spotifyContainer.classList.remove("show"));
-timeBtn.addEventListener("click", showTimeTogether);
-
-// Dışarı tıklanınca bölümleri kapat
-document.addEventListener("click", (e) => {
-  // Geçmiş kutusu
-  if (!historyBox.contains(e.target) && 
-      e.target !== historyBtn && 
-      historyBox.classList.contains("show")) {
-    historyBox.classList.remove("show");
-  }
-  
-  // Spotify kutusu
-  if (!spotifyContainer.contains(e.target) && 
-      e.target !== spotifyBtn && 
-      spotifyContainer.classList.contains("show")) {
-    spotifyContainer.classList.remove("show");
-  }
-});
-
-// Sayfa kapatılırken zamanlayıcıyı temizle
-window.addEventListener('beforeunload', function() {
-  if (timeInterval) {
-    clearInterval(timeInterval);
-  }
-});
+    // Sayfa kapatılırken zamanlayıcıyı temizle
+    window.addEventListener('beforeunload', function() {
+      if (timeInterval) {
+        clearInterval(timeInterval);
+      }
+    });
   </script>
 </body>
 </html>
