@@ -5,495 +5,313 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>bitaneme 💌</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+    /* ================================================================== */
+/* === SİTENİZ İÇİN BÜTÜNLEŞİK GALAKSİ TEMASI CSS KODLARI === */
+/* ================================================================== */
 
-    body {
-      font-family: 'Segoe UI', 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #ffd6e0, #d5f0ff);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      animation: fadeIn 1s ease-in;
-      position: relative;
-      overflow-x: hidden;
-    }
+/* --- Genel Ayarlar ve Font --- */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&display=swap');
 
-    body::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100"><path d="M20,50 Q40,30 50,50 T80,50" stroke="rgba(255,255,255,0.2)" fill="none" stroke-width="0.5"/></svg>');
-      opacity: 0.3;
-      z-index: -1;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+body {
+  font-family: 'Exo 2', sans-serif;
+  background-color: transparent; /* Arka plan efektlerinin görünmesi için */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 1.5s ease-in;
+  position: relative;
+  overflow-x: hidden;
+  color: #f5f5f5;
+}
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-    .header {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      animation: float 4s ease-in-out infinite;
-    }
+/* --- NİHAİ KOZMOS TEMASI CSS (V.FINAL) --- */
 
-    h1 {
-      font-size: 2.4rem;
-      color: #ff4d88;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-      margin-bottom: 0.5rem;
-      position: relative;
-      display: inline-block;
-    }
+/* Ana Arka Plan Konteyneri */
+#cosmic-background {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: radial-gradient(ellipse at bottom, #121421 0%, #03040e 100%);
+  overflow: hidden; z-index: -10;
+}
 
-    h1::after {
-      content: "";
-      position: absolute;
-      bottom: -5px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80%;
-      height: 3px;
-      background: linear-gradient(to right, transparent, #ff4d88, transparent);
-      border-radius: 50%;
-    }
+/* Tüm katmanlar için yumuşak geçiş (Parallax efekti için) */
+#nebula-layer, #stars-layer, #drifting-dust-layer, #pulsar-layer {
+  position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+  transition: transform 0.5s ease-out;
+}
 
-    .subtitle {
-      color: #6a6a6a;
-      font-size: 1.1rem;
-      max-width: 400px;
-    }
+/* Katman 1: Nebulalar */
+.nebula {
+  position: absolute; border-radius: 50%; filter: blur(100px);
+  opacity: 0; animation: nebula-breath 25s ease-in-out infinite;
+}
+.nebula.type-1 { width: 70vmax; height: 70vmax; top: 5vh; left: -15vw; background: rgba(86, 30, 128, 0.3); animation-delay: 0s; }
+.nebula.type-2 { width: 60vmax; height: 60vmax; bottom: 0; right: -10vw; background: rgba(30, 81, 128, 0.4); animation-delay: 7s; }
+@keyframes nebula-breath { 0%, 100% { transform: scale(1.0) rotate(0deg); opacity: 0; } 50% { transform: scale(1.3) rotate(15deg); opacity: 0.6; } }
 
-    .card {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 2.5rem;
-      border-radius: 25px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-      max-width: 450px;
-      width: 100%;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+/* Katman 2: Yıldızlar */
+.star {
+  position: absolute; background-color: #fff; border-radius: 50%;
+  animation: twinkle 5s ease-in-out infinite;
+}
+@keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
 
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    }
+/* Katman 3: Kozmik Toz */
+.dust {
+  position: absolute; background-color: #fff; border-radius: 50%;
+  opacity: 0.1; animation: drift 80s linear infinite;
+}
+@keyframes drift { from { transform: translateX(0vw); } to { transform: translateX(-15vw); } }
 
-    .card::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-      z-index: -1;
-    }
+/* Katman 4: Atan Yıldız (Pulsar) */
+.pulsar {
+  position: absolute;
+  width: 12px; height: 12px;
+  background-color: #fff; border-radius: 50%;
+  box-shadow: 0 0 20px 5px #fff, 0 0 30px 15px #c792ea, 0 0 50px 30px rgba(126, 93, 255, 0.5);
+  animation: pulse-animation 4s ease-in-out infinite;
+}
+@keyframes pulse-animation {
+  0%, 100% { transform: scale(0.8); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
 
-    .message-container {
-      min-height: 120px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-    }
+/* Lütfen eski meteor CSS'ini silip bunu yapıştırın */
+/* --- DÜZELTİLMİŞ METEOR SİSTEMİ (V.FINAL-3) --- */
 
-    .message {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      color: #333;
-      font-weight: 600;
-      line-height: 1.4;
-    }
+/* Bu konteyner meteorun yatay hareketini ve pozisyonunu kontrol eder */
+/* YENİ VE SADELEŞTİRİLMİŞ METEOR KONTEYNERİ */
+.meteor-container {
+  position: fixed; /* Ekrana göre pozisyonlanması için 'fixed' daha iyi */
+  /* Animasyonla ilgili her şey kaldırıldı, JS kontrol edecek */
+}
 
-    .translation {
-      font-size: 1.1rem;
-      margin-top: 0.8rem;
-      color: #666;
-      font-style: italic;
-      padding: 8px 15px;
-      background: rgba(245, 245, 245, 0.7);
-      border-radius: 12px;
-      display: inline-block;
-    }
+/* Bu iç div, meteorun açısını ve görünümünü belirler */
+.meteor-body {
+  position: relative;
+  width: 250px; /* Kuyruk uzunluğu */
+  height: 8px;
+  transform-origin: left center;
+}
 
-    .language {
-      font-size: 1.1rem;
-      color: #888;
-      margin-top: 1.8rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
+.meteor-head {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: #f0e6ff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px 5px #d7bfff, 0 0 25px 15px rgba(215, 189, 255, 0.5);
+  z-index: 2;
+}
 
-    .language i {
-      color: #ff4d88;
-    }
+.meteor-tail {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(215, 189, 255, 0.5));
+  border-radius: 999px;
+  z-index: 1;
+}
 
-    .heart {
-      font-size: 2.5rem;
-      color: #ff4d88;
-      animation: beat 1.2s infinite;
-      margin: 1.2rem 0;
-      text-shadow: 0 0 15px rgba(255, 77, 136, 0.4);
-      will-change: transform;
-    }
 
-    @keyframes beat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.25); }
-    }
 
-    .controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      margin-top: 25px;
-      width: 100%;
-      max-width: 450px;
-    }
 
-    .btn {
-      padding: 12px 25px;
-      border-radius: 12px;
-      border: none;
-      color: white;
-      font-weight: 600;
-      font-size: 1.1rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-      width: 100%;
-      justify-content: center;
-    }
-    
-    .btn-primary {
-      background: linear-gradient(45deg, #ff85a2, #ff4d88);
-    }
-    
-    .btn-secondary {
-      background: linear-gradient(45deg, #6dc5ff, #3daaff);
-    }
-    
-    .btn-spotify {
-      background: linear-gradient(45deg, #1DB954, #1ED760);
-    }
-    
-    .btn-time {
-      background: linear-gradient(45deg, #a58aff, #7b5fff);
-    }
+/* --- Ana Sayfa Elementleri --- */
+.header { text-align: center; margin-bottom: 1.5rem; }
+h1 {
+  font-size: 2.4rem; font-weight: 700; color: #ffffff;
+  text-shadow: 0 0 10px rgba(199, 146, 234, 0.7), 0 0 20px rgba(126, 93, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+.subtitle { color: #d1d1d1; font-size: 1.1rem; font-weight: 300; max-width: 400px; }
 
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 7px 20px rgba(0, 0, 0, 0.25);
-    }
+/* "Buzlu Cam" Efektli Ana Kart */
+.card {
+  background: rgba(15, 10, 40, 0.4); /* Yarı saydam koyu mor */
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15); padding: 2.5rem;
+  border-radius: 25px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  max-width: 450px; width: 100%; text-align: center; position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+}
 
-    .btn:active {
-      transform: translateY(1px);
-    }
+.message-container { min-height: 120px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+.message {
+  font-size: 1.5rem; margin-bottom: 1rem; color: #ffffff;
+  font-weight: 600; line-height: 1.4;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+}
+.translation {
+  font-size: 1.1rem; margin-top: 0.8rem; color: #d1d1d1; font-style: italic;
+  padding: 8px 15px; background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px; display: none; /* JS ile görünür yapılacak */
+}
+.language {
+  font-size: 1.1rem; color: #cccccc; margin-top: 1.8rem;
+  font-weight: 500; display: flex; align-items: center;
+  justify-content: center; gap: 8px;
+}
+.language i { color: #c792ea; }
+.heart {
+  font-size: 2.5rem; color: #c792ea; animation: beat 1.2s infinite;
+  margin: 1.2rem 0; text-shadow: 0 0 15px rgba(199, 146, 234, 0.7);
+}
+@keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+.refresh-small {
+  position: absolute; top: 15px; right: 15px; background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 50%;
+  width: 36px; height: 36px; display: flex; align-items: center;
+  justify-content: center; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease; z-index: 10;
+}
+.refresh-small:hover { background: #c792ea; transform: rotate(360deg); border-color: #c792ea; }
+.refresh-small i { color: #c792ea; font-size: 1rem; transition: color 0.3s ease; }
+.refresh-small:hover i { color: white; }
 
-    .history-box {
-      margin-top: 15px;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid #e0e0e0;
-      border-radius: 18px;
-      max-width: 450px;
-      width: 100%;
-      font-size: 0.95rem;
-      text-align: left;
-      max-height: 300px;
-      overflow-y: auto;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-      display: none;
-      transition: all 0.4s ease;
-    }
+/* --- Butonlar ve Paneller --- */
+.controls { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 25px; width: 100%; max-width: 450px; }
+.btn {
+  padding: 12px 25px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white; font-weight: 600; font-size: 1.1rem;
+  cursor: pointer; display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease; width: 100%; justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+.btn:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-3px); }
+.btn-primary { background: linear-gradient(45deg, #7e5dff, #4a148c); }
+.btn-time { background: linear-gradient(45deg, #0288d1, #01579b); }
+.btn-spotify { background: linear-gradient(45deg, #1DB954, #1ED760); }
 
-    .history-box.show {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
+/* Ortak Panel Stili ("buzlu cam") */
+.history-box, .time-together, .spotify-container {
+  margin-top: 15px; width: 100%; max-width: 450px;
+  background: rgba(15, 10, 40, 0.5);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px; overflow: hidden; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
-    .history-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #eee;
-    }
+.history-box {
+  padding: 20px; text-align: left; max-height: 300px; overflow-y: auto;
+  display: none; transition: all 0.4s ease;
+}
+.history-box.show { display: block; animation: fadeIn 0.5s ease; }
+.history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+.history-title { font-size: 1.2rem; color: #c792ea; font-weight: 600; }
+.history-clear { background: none; border: none; color: #aaa; cursor: pointer; font-size: 0.9rem; transition: color 0.2s; }
+.history-clear:hover { color: #fff; }
+.history-item { padding: 12px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.2); }
+.history-item:last-child { border-bottom: none; }
+.history-date { font-weight: 600; color: #c792ea; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+.history-lang { display: inline-block; background: rgba(255, 255, 255, 0.1); color: #f5f5f5; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; margin-left: 8px; }
+.history-message { color: #e0e0e0; padding-left: 22px; }
+.empty-history { text-align: center; color: #999; padding: 20px; font-style: italic; }
 
-    .history-title {
-      font-size: 1.2rem;
-      color: #ff4d88;
-      font-weight: 600;
-    }
+.time-together { padding: 20px; display: none; text-align: center; }
+.time-together h3 { color: #82b1ff; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.time-text { font-size: 1.1rem; color: #f5f5f5; font-weight: 500; }
 
-    .history-clear {
-      background: none;
-      border: none;
-      color: #999;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: color 0.2s;
-    }
+.spotify-header { background: linear-gradient(45deg, #1DB954, #1ED760); color: white; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+.spotify-title { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.spotify-close { background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; }
+.spotify-alternative { padding: 20px; text-align: center; }
+.spotify-alternative p { color: #f5f5f5; }
+.spotify-link { display: inline-block; margin-top: 15px; padding: 10px 20px; background: linear-gradient(45deg, #1DB954, #1ED760); color: white; border-radius: 20px; text-decoration: none; font-weight: bold; }
 
-    .history-clear:hover {
-      color: #ff4d88;
-    }
+.footer { margin-top: 25px; color: #aaa; font-size: 0.9rem; text-align: center; max-width: 450px; }
 
-    .history-item {
-      padding: 12px 0;
-      border-bottom: 1px dashed #eee;
-    }
+/* Daktilo İmleci */
+.typing-cursor {
+  display: inline-block; width: 3px; height: 1.5rem;
+  background-color: #f5f5f5; animation: blink 0.7s infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    .history-item:last-child {
-      border-bottom: none;
-    }
 
-    .history-date {
-      font-weight: 600;
-      color: #ff4d88;
-      margin-bottom: 3px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .history-lang {
-      display: inline-block;
-      background: #f0f7ff;
-      color: #3daaff;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      margin-left: 8px;
-    }
-
-    .history-message {
-      color: #555;
-      padding-left: 22px;
-    }
-
-    .empty-history {
-      text-align: center;
-      color: #999;
-      padding: 20px;
-      font-style: italic;
-    }
-
-    .footer {
-      margin-top: 25px;
-      color: #888;
-      font-size: 0.9rem;
-      text-align: center;
-      max-width: 450px;
-    }
-
-    .time-together {
-      background: rgba(255, 255, 255, 0.85);
-      padding: 15px;
-      border-radius: 18px;
-      margin-top: 15px;
-      max-width: 450px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-      animation: fadeIn 0.8s ease;
-      display: none;
-    }
-    
-    .time-together h3 {
-      color: #7b5fff;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    
-    .time-text {
-      font-size: 1.1rem;
-      color: #555;
-      font-weight: 500;
-    }
-    
-    .spotify-container {
-      margin-top: 15px;
-      width: 100%;
-      max-width: 450px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-      animation: fadeIn 0.8s ease;
-    }
-    
-    .spotify-header {
-      background: linear-gradient(45deg, #1DB954, #1ED760);
-      color: white;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    
-    .spotify-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-    }
-    
-    .spotify-close {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-
-    /* Yenile butonu için yeni stil */
-    .refresh-small {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255, 255, 255, 0.8);
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-      z-index: 10;
-    }
-    
-    .refresh-small:hover {
-      background: #ff4d88;
-      transform: rotate(360deg);
-    }
-    
-    .refresh-small:hover i {
-      color: white;
-    }
-    
-    .refresh-small i {
-      color: #ff4d88;
-      font-size: 1rem;
-      transition: color 0.3s ease;
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2rem;
-      }
-      
-      .card {
-        padding: 1.8rem;
-      }
-      
-      .message {
-        font-size: 1.3rem;
-      }
-      
-      .btn {
-        padding: 10px 20px;
-        font-size: 1rem;
-      }
-      
-      .history-box {
-        padding: 15px;
-      }
-      
-      .time-text {
-        font-size: 1rem;
-      }
-      
-      .refresh-small {
-        top: 5px;
-        right: 5px;
-        width: 32px;
-        height: 32px;
-      }
-    }
-
-    @media (max-width: 350px) {
-      h1 {
-        font-size: 1.8rem;
-      }
-      
-      .message {
-        font-size: 1.2rem;
-      }
-    }
-  </style>
+/* --- Mobil Uyum (Responsive) --- */
+@media (max-width: 480px) {
+  h1 { font-size: 2rem; }
+  .card { padding: 1.8rem; }
+  .message { font-size: 1.3rem; }
+  .btn { padding: 10px 20px; font-size: 1rem; }
+  .history-box { padding: 15px; }
+  .time-text { font-size: 1rem; }
+}
+</style>
 </head>
 <body>
+
+  
+ <div id="cosmic-background">
+  <div id="nebula-layer"></div>
+  <div id="stars-layer"></div>
+  <div id="drifting-dust-layer"></div>
+  <div id="pulsar-layer"></div>
+</div> <div id="cursor-glow"></div>
+
+   
   <div class="header">
     <h1>Bitaneme 💖</h1>
     <p class="subtitle">Her gün farklı bir dilden sevgi mesajın</p>
   </div>
   
   <div class="card">
-    <!-- Mesajı yenile butonu (ufak) -->
     <button class="refresh-small" id="smallRefreshBtn">
       <i class="fas fa-sync-alt"></i>
     </button>
-    
     <div class="message-container">
       <div class="message" id="mainMessage">...</div>
       <div class="translation" id="translationText"></div>
     </div>
-    
     <div class="heart">❤️</div>
-    
     <div class="language">
       <i class="fas fa-globe-americas"></i>
       <span id="languageName"></span>
     </div>
   </div>
   
-  <!-- Spotify bölümü doğrudan görünür olacak -->
   <div class="spotify-container" id="spotifyContainer">
     <div class="spotify-header">
       <div class="spotify-title">
         <i class="fab fa-spotify"></i>
         Bizim Şarkılarımız
       </div>
-      <button class="spotify-close" id="spotifyCloseBtn">&times;</button>
+      <button class="spotify-close" id="spotifyCloseBtn">×</button>
     </div>
-    <iframe style="border-radius:0 0 18px 18px" src="https://open.spotify.com/embed/playlist/4S2v4JMYIsxuxBuogzuK0U?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <iframe style="border-radius:0 0 18px 18px;" 
+        src="https://open.spotify.com/embed/playlist/4S2v4JMYIsxuxBuogzuK0U?utm_source=generator&theme=0" 
+        width="100%" 
+        height="352" 
+        frameBorder="0" 
+        allowfullscreen="" 
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+        loading="lazy">
+    </iframe>
   </div>
   
   <div class="controls">
@@ -501,12 +319,10 @@
       <i class="fas fa-history"></i>
       Geçmiş "Seni Seviyorum" Mesajları
     </button>
-    
     <button class="btn btn-time" id="timeBtn">
       <i class="fas fa-heart"></i>
       Beraber Geçen Süremiz
     </button>
-    
     <div class="history-box" id="historyBox">
       <div class="history-header">
         <div class="history-title">Sevgi Tarihçesi</div>
@@ -516,7 +332,6 @@
     </div>
   </div>
   
-  <!-- Tanıştığımızdan beri geçen süre bölümü -->
   <div class="time-together" id="timeTogether">
     <h3><i class="fas fa-heartbeat"></i> Beraber Geçen Süremiz</h3>
     <div class="time-text" id="timeText"></div>
@@ -525,6 +340,7 @@
   <div class="footer">
     Ela'ya olan sevgimle güçlendirildi ❤️
   </div>
+
 
   <script>
     const messages = [
@@ -963,13 +779,10 @@
     evening: ["Оройн мэнд, Эла!", "İyi akşamlar Ela!"],
     night: ["Сайхан амраарай, Эла. Би чамд хайртай ❤️", "İyi geceler Ela. Seni seviyorum ❤️"]
   }
-   ]
-    ];
+    ]];
 
-    // Tanışma tarihi (28 Haziran 2025)
-    const firstDay = new Date(2025, 5, 28, 17, 0);  // Ay 0'dan başlar: 5 = Haziran
+    const firstDay = new Date(2025, 5, 28, 17, 0);
     
-    // DOM Elementleri
     const mainMessage = document.getElementById("mainMessage");
     const translationText = document.getElementById("translationText");
     const languageName = document.getElementById("languageName");
@@ -981,104 +794,105 @@
     const timeBtn = document.getElementById("timeBtn");
     const timeTogether = document.getElementById("timeTogether");
     const timeText = document.getElementById("timeText");
+    const spotifyContainer = document.getElementById('spotifyContainer');
     const spotifyCloseBtn = document.getElementById("spotifyCloseBtn");
 
-    // Mesaj gösterimini güncelle
     function updateMessage() {
       const now = new Date();
       const hour = now.getHours();
-      const dayIndex = (now.getDate() - 1) % messages.length;
-      const today = messages[dayIndex];
-
-      let selected = today.night;
-      if (hour >= 5 && hour < 12) {
-        selected = today.morning;
-      } else if (hour >= 12 && hour < 17) {
-        selected = today.noon;
-      } else if (hour >= 17 && hour <= 21) {
-        selected = today.evening;
+      const todayStr = now.toISOString().split('T')[0];
+      let dailyData;
+      try {
+        const storedData = localStorage.getItem('dailyMessageData');
+        dailyData = storedData ? JSON.parse(storedData) : null;
+      } catch (e) { dailyData = null; }
+      let dayIndex;
+      if (dailyData && dailyData.date === todayStr) {
+        dayIndex = dailyData.index;
+      } else {
+        const lastIndex = dailyData ? dailyData.index : -1;
+        let newIndex;
+        if (messages.length > 1) {
+          do {
+            newIndex = Math.floor(Math.random() * messages.length);
+          } while (newIndex === lastIndex);
+        } else { newIndex = 0; }
+        dayIndex = newIndex;
+        const newDailyData = { date: todayStr, index: dayIndex };
+        localStorage.setItem('dailyMessageData', JSON.stringify(newDailyData));
       }
-
-      mainMessage.textContent = selected[0];
-      translationText.textContent = `"${selected[1]}"`;
+      const today = messages[dayIndex];
+      if (!today) { return; }
+      let selected = today.night;
+      if (hour >= 5 && hour < 12) { selected = today.morning; }
+      else if (hour >= 12 && hour < 17) { selected = today.noon; }
+      else if (hour >= 17 && hour <= 21) { selected = today.evening; }
+      
       languageName.textContent = `Bugünün Dili: ${today.lang}`;
-
-      // "Seni seviyorum" içeren mesajları kaydet
       saveLoveMessage(today, selected[0]);
+
+      function typeWriter(element, text, callback) {
+        element.innerHTML = "";
+        let i = 0;
+        const cursor = '<span class="typing-cursor"></span>';
+        element.innerHTML = cursor;
+        const typingInterval = setInterval(() => {
+          if (i < text.length) {
+            element.innerHTML = text.substring(0, i + 1) + cursor;
+            i++;
+          } else {
+            clearInterval(typingInterval);
+            element.innerHTML = text;
+            if (callback) { setTimeout(callback, 300); }
+          }
+        }, 80);
+      }
+      typeWriter(mainMessage, selected[0], () => {
+        translationText.style.display = 'inline-block';
+        typeWriter(translationText, `"${selected[1]}"`);
+      });
     }
 
-    // "Seni seviyorum" mesajlarını kaydet
     function saveLoveMessage(today, originalMessage) {
-      // Sadece gece mesajlarını ("Seni seviyorum" içeren) kaydet
       const nightMessage = today.night[0];
-      
-      // Eğer mesaj gece mesajıysa kaydet
       if (originalMessage === nightMessage) {
         const todayKey = new Date().toISOString().split("T")[0];
         const saved = JSON.parse(localStorage.getItem("loveHistory") || "[]");
-        
-        // Aynı gün daha önce eklenmediyse
         if (!saved.find(e => e.date === todayKey)) {
-          saved.push({ 
-            date: todayKey, 
-            message: originalMessage,
-            lang: today.lang,
-            timestamp: new Date().getTime()
-          });
+          saved.push({ date: todayKey, message: originalMessage, lang: today.lang, timestamp: new Date().getTime() });
           localStorage.setItem("loveHistory", JSON.stringify(saved));
         }
       }
     }
 
-    // Geçmiş mesajları göster
     function showHistory() {
       const history = JSON.parse(localStorage.getItem("loveHistory") || "[]");
-      
-      // Tarihe göre ters sırala (en yeni en üstte)
       history.sort((a, b) => b.timestamp - a.timestamp);
-      
       if (history.length === 0) {
         historyContent.innerHTML = `<div class="empty-history">Henüz hiç "Seni seviyorum" mesajı kaydedilmedi</div>`;
       } else {
         let html = "";
         history.forEach(entry => {
-          // Tarihi formatla (GG/AA/YYYY)
           const dateParts = entry.date.split("-");
           const formattedDate = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
-          
-          html += `
-            <div class="history-item">
-              <div class="history-date">
-                <i class="far fa-calendar-alt"></i>
-                ${formattedDate}
-                <span class="history-lang">${entry.lang}</span>
-              </div>
-              <div class="history-message">${entry.message}</div>
-            </div>
-          `;
+          html += `<div class="history-item"><div class="history-date"><i class="far fa-calendar-alt"></i> ${formattedDate} <span class="history-lang">${entry.lang}</span></div><div class="history-message">${entry.message}</div></div>`;
         });
         historyContent.innerHTML = html;
       }
-      
       historyBox.classList.toggle("show");
-      // Diğer açık bölümleri kapat
       timeTogether.style.display = "none";
     }
 
-    // Geçmişi temizle
     function clearHistory() {
       if (confirm("Tüm geçmiş mesajlar silinecek. Emin misiniz?")) {
         localStorage.removeItem("loveHistory");
         showHistory();
       }
     }
-    
-    // Beraber geçen süreyi hesapla ve göster
-    let timeInterval;
 
+    let timeInterval;
     function showTimeTogether() {
       if (timeInterval) clearInterval(timeInterval);
-      
       function updateTime() {
         const now = new Date();
         const diffTime = Math.abs(now - firstDay);
@@ -1088,47 +902,225 @@
         const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
         const diffMonths = Math.floor(diffDays / 30);
         const remainingDays = diffDays % 30;
-
-        timeText.innerHTML = `Bitanem , ${diffMonths>0?diffMonths+' ay ':''}${remainingDays} gün ${diffHours} saat ${diffMinutes} dakika ${diffSeconds} saniyedir senin için atıyor haberin olsun yaniii 💖`;
+        timeText.innerHTML = `Bitanem , ${diffMonths > 0 ? diffMonths + ' ay ' : ''}${remainingDays} gün ${diffHours} saat ${diffMinutes} dakika ${diffSeconds} saniyedir senin için atıyor haberin olsun yaniii 💖`;
       }
-      
       updateTime();
       timeInterval = setInterval(updateTime, 1000);
       timeTogether.style.display = "block";
       historyBox.classList.remove("show");
     }
-    
-    // Spotify playlistini kapat
+
     function closeSpotifyPlaylist() {
       spotifyContainer.style.display = "none";
     }
 
-    // Sayfa yüklendiğinde mesajı güncelle
     updateMessage();
 
-    // Olay dinleyicileri
     historyBtn.addEventListener("click", showHistory);
     smallRefreshBtn.addEventListener("click", updateMessage);
     clearHistoryBtn.addEventListener("click", clearHistory);
     timeBtn.addEventListener("click", showTimeTogether);
     spotifyCloseBtn.addEventListener("click", closeSpotifyPlaylist);
 
-    // Dışarı tıklanınca bölümleri kapat
     document.addEventListener("click", (e) => {
-      // Geçmiş kutusu
-      if (!historyBox.contains(e.target) && 
-          e.target !== historyBtn && 
-          historyBox.classList.contains("show")) {
+      if (!historyBox.contains(e.target) && e.target !== historyBtn && historyBox.classList.contains("show")) {
         historyBox.classList.remove("show");
       }
     });
 
-    // Sayfa kapatılırken zamanlayıcıyı temizle
     window.addEventListener('beforeunload', function() {
-      if (timeInterval) {
-        clearInterval(timeInterval);
-      }
+      if (timeInterval) { clearInterval(timeInterval); }
     });
   </script>
+
+  <script>
+// --- NİHAİ KOZMOS SİHİRBAZI (V.FINAL) ---
+document.addEventListener('DOMContentLoaded', function() {
+  
+  const cosmicContainer = document.getElementById('cosmic-background');
+  if (!cosmicContainer) return;
+
+  const nebulaLayer = document.getElementById('nebula-layer');
+  const starsLayer = document.getElementById('stars-layer');
+  const dustLayer = document.getElementById('drifting-dust-layer');
+  const pulsarLayer = document.getElementById('pulsar-layer');
+
+  // --- Fonksiyonlar ---
+  const createElements = (container, count, className) => {
+    for (let i = 0; i < count; i++) {
+      let el = document.createElement('div');
+      el.className = className;
+      
+      if (className === 'star') {
+        el.style.width = el.style.height = `${Math.random() * 2 + 0.5}px`;
+        el.style.animationDelay = `${Math.random() * 7}s`;
+        el.style.animationDuration = `${Math.random() * 4 + 3}s`;
+      } else if (className === 'dust') {
+        el.style.width = el.style.height = `${Math.random() * 1.5}px`;
+        el.style.animationDelay = `${Math.random() * 80}s`;
+        el.style.animationDuration = `${Math.random() * 30 + 50}s`;
+      } else if (className === 'pulsar') {
+        el.style.animationDelay = `${Math.random() * 6}s`;
+      }
+      
+      el.style.top = `${Math.random() * 100}%`;
+      el.style.left = `${Math.random() * 100}%`;
+      container.appendChild(el);
+    }
+  };
+  
+  // ESKİ createMeteor ve setInterval satırını silip bunu yapıştırın
+
+  const createMeteor = () => {
+      // 1. Ana konteyneri oluştur
+      let container = document.createElement('div');
+      container.className = 'meteor-container';
+
+      // 2. Meteorun gövdesini (açıyı taşıyan) oluştur
+      let body = document.createElement('div');
+      body.className = 'meteor-body';
+
+      // 3. Kafa ve Kuyruğu oluştur
+      let head = document.createElement('div');
+      head.className = 'meteor-head';
+      let tail = document.createElement('div');
+      tail.className = 'meteor-tail';
+
+      // 4. Parçaları birleştir: kuyruk ve kafa -> gövdeye, gövde -> ana konteynere
+      body.appendChild(tail);
+      body.appendChild(head);
+      container.appendChild(body);
+
+      // 5. Rastgele değerleri ata
+      const startY = Math.random() * 100; // Başlangıç yüksekliği
+      const rotation = Math.random() * 20 + 20; // 20-40 derece arası eğim
+      const duration = Math.random() * 5 + 5; // 5-10 saniye arası hız
+
+      // Konteynerin pozisyonunu ve animasyonunu ayarla
+      container.style.top = `${startY}vh`;
+      container.style.left = `0`;
+      container.style.animation = `fall ${duration}s ease-in-out infinite`;
+      container.style.animationDelay = `${Math.random() * 10}s`;
+      
+      // Gövdenin açısını ve kuyruk uzunluğunu ayarla
+      body.style.transform = `rotate(${rotation}deg)`;
+      body.style.width = `${Math.random() * 200 + 150}px`;
+
+      cosmicContainer.appendChild(container);
+  };
+
+  // ESKİ setInterval bloğunu silip bunu yapıştırın
+
+  // Her 4 saniyede bir, tamamen rastgele rotaya sahip yeni bir meteor yarat
+  setInterval(() => {
+      // 1. Gerekli HTML elementlerini oluştur (bu yapı doğru çalışıyor)
+      let container = document.createElement('div');
+      container.className = 'meteor-container';
+      let body = document.createElement('div');
+      body.className = 'meteor-body';
+      let head = document.createElement('div');
+      head.className = 'meteor-head';
+      let tail = document.createElement('div');
+      tail.className = 'meteor-tail';
+      body.appendChild(tail);
+      body.appendChild(head);
+      container.appendChild(body);
+
+      // 2. Rastgele başlangıç ve bitiş noktaları hesapla
+      const edge = Math.floor(Math.random() * 4); // 0:üst, 1:sağ, 2:alt, 3:sol
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      let startX, startY, endX, endY;
+
+      if (edge === 0) { // Üstten başla
+          startX = Math.random() * viewportWidth;
+          startY = -100;
+          endX = Math.random() * viewportWidth;
+          endY = viewportHeight + 100;
+      } else if (edge === 1) { // Sağdan başla
+          startX = viewportWidth + 100;
+          startY = Math.random() * viewportHeight;
+          endX = -100;
+          endY = Math.random() * viewportHeight;
+      } else if (edge === 2) { // Alttan başla
+          startX = Math.random() * viewportWidth;
+          startY = viewportHeight + 100;
+          endX = Math.random() * viewportWidth;
+          endY = -100;
+      } else { // Soldan başla
+          startX = -100;
+          startY = Math.random() * viewportHeight;
+          endX = viewportWidth + 100;
+          endY = Math.random() * viewportHeight;
+      }
+
+      // 3. Başlangıç ve bitiş noktalarına göre açıyı hesapla
+      const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
+      const duration = Math.random() * 5 + 4; // 4-9 saniye arası hız
+
+      // 4. Stilleri uygula
+      container.style.top = `${startY}px`;
+      container.style.left = `${startX}px`;
+      body.style.transform = `rotate(${angle}deg)`;
+      body.style.width = `${Math.random() * 150 + 150}px`; // Kuyruk uzunluğu
+      
+      // Hareketi başlatmak için CSS transition'ı ayarla
+      container.style.transition = `transform ${duration}s ease-in`;
+      
+      cosmicContainer.appendChild(container);
+
+      // 5. Ufak bir gecikmeyle hareketi tetikle (bu, tarayıcının ilk pozisyonu algılamasını sağlar)
+      requestAnimationFrame(() => {
+        container.style.transform = `translate(${endX - startX}px, ${endY - startY}px)`;
+      });
+
+      // 6. Animasyon bitince elementi sil
+      setTimeout(() => {
+          container.remove();
+      }, duration * 1000);
+
+  }, 4000); // Ortalama 4 saniyede bir yeni meteor
+      // Performans için animasyon bitince meteoru DOM'dan kaldır
+      
+
+  const setupParallax = () => {
+      const layers = [
+          { el: nebulaLayer, factor: 0.02 },
+          { el: starsLayer, factor: 0.04 },
+          { el: dustLayer, factor: 0.06 },
+          { el: pulsarLayer, factor: 0.05 }
+      ];
+      window.addEventListener('mousemove', (e) => {
+          const centerX = window.innerWidth / 2;
+          const centerY = window.innerHeight / 2;
+          const deltaX = (e.clientX - centerX) * -1; // Hareketi tersine çevir
+          const deltaY = (e.clientY - centerY) * -1;
+
+          layers.forEach(layer => {
+              if (layer.el) {
+                  layer.el.style.transform = `translate(${deltaX * layer.factor}px, ${deltaY * layer.factor}px)`;
+              }
+          });
+      });
+  };
+
+  // --- Her şeyi başlat ---
+if (nebulaLayer) {
+  const nebula1 = document.createElement('div'); nebula1.className = 'nebula type-1';
+  const nebula2 = document.createElement('div'); nebula2.className = 'nebula type-2';
+  nebulaLayer.append(nebula1, nebula2);
+}
+
+createElements(starsLayer, 350, 'star');     // Eksik olan 'star' sınıfını ekledik
+createElements(dustLayer, 150, 'dust');      // Eksik olan 'dust' sınıfını ekledik
+createElements(pulsarLayer, 2, 'pulsar');    // Eksik olan 'pulsar' sınıfını ekledik
+
+
+setupParallax();
+
+});
+</script>
+  
+
 </body>
 </html>
