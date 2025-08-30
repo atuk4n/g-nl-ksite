@@ -1168,16 +1168,11 @@ setupParallax();
 })();
 </script>
 <script type="module">
-  // --- DÜZELTİLMİŞ VERSİYON ---
-
-  // Firebase app modülünü doğru URL'den içe aktar
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  
-  // Firebase Messaging servisini içe aktar
-  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
+  import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
+
+   const firebaseConfig = {
     apiKey: "AIzaSyATzx1zCbCrmTx2KCkYVlJTMW6CzgUIUJg",
     authDomain: "elata-b07a8.firebaseapp.com",
     projectId: "elata-b07a8",
@@ -1187,66 +1182,48 @@ setupParallax();
     measurementId: "G-55XEGRPFHW"
   };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
 
-  // Mesajlaşma servisini başlat
+  const app = initializeApp(firebaseConfig);
   const messaging = getMessaging(app);
 
-// ESKİ requestPermission FONKSİYONUNU SİLİP BU YENİ VERSİYONU YAPIŞTIRIN
-
-function requestPermission() {
-  const subtitleElement = document.querySelector('.subtitle');
-  
-  // İşlemin her adımında kullanıcıya bilgi verelim
-  subtitleElement.textContent = "Bildirim izni isteniyor...";
-  subtitleElement.style.fontSize = '14px'; // Yazı boyutunu normale çevirelim
-  subtitleElement.style.wordBreak = 'normal';
-
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      subtitleElement.textContent = "İzin verildi. Cihaz token'ı alınıyor...";
-      console.log('Notification permission granted.');
-      
-      getToken(messaging, { vapidKey: 'BEChX0Z2-EcBQMvst6cysFz9-6zWGwD04pTm7ihzjME0QZZHEMSflFKX9WU_qjtlOdTOPhQGweG1BstUpPBTCwk'  }).then((currentToken) => {
-        if (currentToken) {
-          // BAŞARILI! TOKEN'I EKRANA YAZDIRMA
-          subtitleElement.textContent = currentToken;
-          subtitleElement.style.fontSize = '12px';
-          subtitleElement.style.wordBreak = 'break-all';
-          console.log('Cihaz Token:', currentToken);
-        } else {
-          // Token alınamadı ama hata da vermedi.
-          subtitleElement.textContent = "İzin verildi ancak token alınamadı. Service Worker dosyasını kontrol edin.";
-          console.log('No registration token available. Request permission to generate one.');
-        }
-      }).catch((err) => {
-        // Token alırken bir hata oluştu.
-        subtitleElement.textContent = "Token alınırken hata oluştu: " + err.code;
-        console.log('An error occurred while retrieving token. ', err);
-      });
-    } else {
-      // Kullanıcı izni reddetti.
-      subtitleElement.textContent = "Bildirim izni verilmedi.";
-      console.log('Unable to get permission to notify.');
-    }
-  });
-}
-
-  // Sayfa yüklendiğinde izin iste
-  requestPermission();
-
-  // Site ön plandayken (açıkken) gelen bildirimleri dinle
-  onMessage(messaging, (payload) => {
-    console.log('Message received while page is active. ', payload);
-    const notification = new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: payload.notification.icon
+  function requestPermission() {
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        // KENDİ PROJE ANAHTARINIZI KULLANIN!
+        const vapidKey = 'BEChX0Z2-EcBQMvst6cysFz9-6zWGwD04pTm7ihzjME0QZZHEMSflFKX9WU_qjtlOdTOPhQGweG1BstUpPBTCwk';
+        getToken(messaging, { vapidKey: vapidKey }).then((currentToken) => {
+          if (currentToken) {
+            console.log('CİHAZ TOKEN:', currentToken);
+            alert('TOKEN ALINDI:\n\n' + currentToken); // Token'ı ekranda göster
+          } else {
+            alert('Token alınamadı. İzinler veya Service Worker kontrol edilmeli.');
+          }
+        }).catch((err) => {
+          alert('Token alınırken hata: ' + err.code + '\n\n' + err.message);
+          console.log('An error occurred while retrieving token. ', err);
+        });
+      } else {
+        alert('Bildirim izni verilmedi.');
+      }
     });
-  });
+  }
+
+  // İzin istemek için bir düğme oluşturalım
+  const permissionButton = document.createElement('button');
+  permissionButton.textContent = 'Bildirimlere İzin Ver';
+  permissionButton.style.position = 'fixed';
+  permissionButton.style.bottom = '20px';
+  permissionButton.style.zIndex = '9999';
+  permissionButton.style.padding = '15px';
+  permissionButton.style.backgroundColor = '#c792ea';
+  permissionButton.style.color = 'white';
+  permissionButton.style.border = 'none';
+  permissionButton.style.borderRadius = '10px';
+  permissionButton.style.cursor = 'pointer';
+  document.body.appendChild(permissionButton);
+  permissionButton.onclick = requestPermission;
 
 </script>
 </body>
 </html>
-
-  
