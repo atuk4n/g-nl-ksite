@@ -1188,6 +1188,54 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+// --- YENİ EKLENECEK KOD BAŞLANGICI ---
+
+// Firebase Messaging servisini içe aktar
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
+
+// Mesajlaşma servisini başlat
+const messaging = getMessaging(app);
+
+// Bildirim izni isteme ve cihazın token'ını alma fonksiyonu
+function requestPermission() {
+  console.log('Requesting permission...');
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');
+      
+      // Cihazın benzersiz token'ını al
+      // Bu token, Firebase'in hangi cihaza bildirim göndereceğini bilmesini sağlar
+      getToken(messaging, { vapidKey: 'BHyHnl7B1A89e2y80P5s8g_bWW81PFTs-gSg_sDaxVqO3gK82HAbH3QcM9B2G2d5-qT0sL9rB8cZ_wN7eX1rY4c' }).then((currentToken) => {
+        if (currentToken) {
+          // Bu token'ı daha sonra sunucu tarafında kullanmak için bir yere kaydetmemiz gerekecek.
+          // Şimdilik sadece konsolda görelim.
+          console.log('Cihaz Token:', currentToken);
+        } else {
+          console.log('No registration token available. Request permission to generate one.');
+        }
+      }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+      });
+    } else {
+      console.log('Unable to get permission to notify.');
+    }
+  });
+}
+
+// Sayfa yüklendiğinde izin iste
+requestPermission();
+
+// Site ön plandayken (açıkken) gelen bildirimleri dinle (isteğe bağlı)
+onMessage(messaging, (payload) => {
+  console.log('Message received. ', payload);
+  // İsterseniz burada özel bir bildirim gösterebilirsiniz
+  const notification = new Notification(payload.notification.title, {
+      body: payload.notification.body,
+      icon: payload.notification.icon
+  });
+});
+
+// --- YENİ EKLENECEK KOD BİTİŞİ ---
 const analytics = getAnalytics(app);
 </script>
 </body>
