@@ -1193,31 +1193,41 @@ setupParallax();
   // Mesajlaşma servisini başlat
   const messaging = getMessaging(app);
 
-  // ESKİ requestPermission FONKSİYONUNU SİLİP BUNU YAPIŞTIRIN
+// ESKİ requestPermission FONKSİYONUNU SİLİP BU YENİ VERSİYONU YAPIŞTIRIN
 
 function requestPermission() {
-  console.log('Requesting permission...');
+  const subtitleElement = document.querySelector('.subtitle');
+  
+  // İşlemin her adımında kullanıcıya bilgi verelim
+  subtitleElement.textContent = "Bildirim izni isteniyor...";
+  subtitleElement.style.fontSize = '14px'; // Yazı boyutunu normale çevirelim
+  subtitleElement.style.wordBreak = 'normal';
+
   Notification.requestPermission().then((permission) => {
     if (permission === 'granted') {
+      subtitleElement.textContent = "İzin verildi. Cihaz token'ı alınıyor...";
       console.log('Notification permission granted.');
       
       getToken(messaging, { vapidKey: 'BHyHnl7B1A89e2y80P5s8g_bWW81PFTs-gSg_sDaxVqO3gK82HAbH3QcM9B2G2d5-qT0sL9rB8cZ_wN7eX1rY4c' }).then((currentToken) => {
         if (currentToken) {
-          // TOKEN'I EKRANA YAZDIRMA
-          const subtitleElement = document.querySelector('.subtitle');
-          if (subtitleElement) {
-            subtitleElement.textContent = currentToken;
-            subtitleElement.style.fontSize = '12px'; // Okunması için biraz küçültelim
-            subtitleElement.style.wordBreak = 'break-all'; // Kelimeleri kırarak sığdır
-          }
-          console.log('Cihaz Token:', currentToken); // Konsola da yazmaya devam etsin
+          // BAŞARILI! TOKEN'I EKRANA YAZDIRMA
+          subtitleElement.textContent = currentToken;
+          subtitleElement.style.fontSize = '12px';
+          subtitleElement.style.wordBreak = 'break-all';
+          console.log('Cihaz Token:', currentToken);
         } else {
+          // Token alınamadı ama hata da vermedi.
+          subtitleElement.textContent = "İzin verildi ancak token alınamadı. Service Worker dosyasını kontrol edin.";
           console.log('No registration token available. Request permission to generate one.');
         }
       }).catch((err) => {
+        // Token alırken bir hata oluştu.
+        subtitleElement.textContent = "Token alınırken hata oluştu: " + err.code;
         console.log('An error occurred while retrieving token. ', err);
       });
     } else {
+      // Kullanıcı izni reddetti.
+      subtitleElement.textContent = "Bildirim izni verilmedi.";
       console.log('Unable to get permission to notify.');
     }
   });
