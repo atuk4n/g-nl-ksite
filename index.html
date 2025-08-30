@@ -1168,75 +1168,66 @@ setupParallax();
 })();
 </script>
 <script type="module">
-	// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+  // --- DÜZELTİLMİŞ VERSİYON ---
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyATzx1zCbCrmTx2KCkYVlJTMW6CzgUIUJg",
-  authDomain: "elata-b07a8.firebaseapp.com",
-  projectId: "elata-b07a8",
-  storageBucket: "elata-b07a8.firebasestorage.app",
-  messagingSenderId: "944810364139",
-  appId: "1:944810364139:web:127f1d2ebf473aead802ae",
-  measurementId: "G-55XEGRPFHW"
-};
+  // Firebase app modülünü doğru URL'den içe aktar
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+  
+  // Firebase Messaging servisini içe aktar
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// --- YENİ EKLENECEK KOD BAŞLANGICI ---
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyATzx1zCbCrmTx2KCkYVlJTMW6CzgUIUJg",
+    authDomain: "elata-b07a8.firebaseapp.com",
+    projectId: "elata-b07a8",
+    storageBucket: "elata-b07a8.firebasestorage.app",
+    messagingSenderId: "944810364139",
+    appId: "1:944810364139:web:127f1d2ebf473aead802ae",
+    measurementId: "G-55XEGRPFHW"
+  };
 
-// Firebase Messaging servisini içe aktar
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js";
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
 
-// Mesajlaşma servisini başlat
-const messaging = getMessaging(app);
+  // Mesajlaşma servisini başlat
+  const messaging = getMessaging(app);
 
-// Bildirim izni isteme ve cihazın token'ını alma fonksiyonu
-function requestPermission() {
-  console.log('Requesting permission...');
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-      
-      // Cihazın benzersiz token'ını al
-      // Bu token, Firebase'in hangi cihaza bildirim göndereceğini bilmesini sağlar
-      getToken(messaging, { vapidKey: 'BHyHnl7B1A89e2y80P5s8g_bWW81PFTs-gSg_sDaxVqO3gK82HAbH3QcM9B2G2d5-qT0sL9rB8cZ_wN7eX1rY4c' }).then((currentToken) => {
-        if (currentToken) {
-          // Bu token'ı daha sonra sunucu tarafında kullanmak için bir yere kaydetmemiz gerekecek.
-          // Şimdilik sadece konsolda görelim.
-          console.log('Cihaz Token:', currentToken);
-        } else {
-          console.log('No registration token available. Request permission to generate one.');
-        }
-      }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-      });
-    } else {
-      console.log('Unable to get permission to notify.');
-    }
+  // Bildirim izni isteme ve cihazın token'ını alma fonksiyonu
+  function requestPermission() {
+    console.log('Requesting permission...');
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        
+        // Cihazın benzersiz token'ını al
+        getToken(messaging, { vapidKey: 'BHyHnl7B1A89e2y80P5s8g_bWW81PFTs-gSg_sDaxVqO3gK82HAbH3QcM9B2G2d5-qT0sL9rB8cZ_wN7eX1rY4c' }).then((currentToken) => {
+          if (currentToken) {
+            console.log('Cihaz Token:', currentToken);
+          } else {
+            console.log('No registration token available. Request permission to generate one.');
+          }
+        }).catch((err) => {
+          console.log('An error occurred while retrieving token. ', err);
+        });
+      } else {
+        console.log('Unable to get permission to notify.');
+      }
+    });
+  }
+
+  // Sayfa yüklendiğinde izin iste
+  requestPermission();
+
+  // Site ön plandayken (açıkken) gelen bildirimleri dinle
+  onMessage(messaging, (payload) => {
+    console.log('Message received while page is active. ', payload);
+    const notification = new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: payload.notification.icon
+    });
   });
-}
 
-// Sayfa yüklendiğinde izin iste
-requestPermission();
-
-// Site ön plandayken (açıkken) gelen bildirimleri dinle (isteğe bağlı)
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-  // İsterseniz burada özel bir bildirim gösterebilirsiniz
-  const notification = new Notification(payload.notification.title, {
-      body: payload.notification.body,
-      icon: payload.notification.icon
-  });
-});
-
-// --- YENİ EKLENECEK KOD BİTİŞİ ---
-const analytics = getAnalytics(app);
 </script>
 </body>
 </html>
