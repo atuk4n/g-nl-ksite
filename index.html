@@ -1208,7 +1208,7 @@ function requestPermission() {
       subtitleElement.textContent = "İzin verildi. Cihaz token'ı alınıyor...";
       console.log('Notification permission granted.');
       
-      getToken(messaging, { vapidKey: 'BHyHnl7B1A89e2y80P5s8g_bWW81PFTs-gSg_sDaxVqO3gK82HAbH3QcM9B2G2d5-qT0sL9rB8cZ_wN7eX1rY4c' }).then((currentToken) => {
+      getToken(messaging, { vapidKey: 'BEChX0Z2-EcBQMvst6cysFz9-6zWGwD04pTm7ihzjME0QZZHEMSflFKX9WU_qjtlOdTOPhQGweG1BstUpPBTCwk'  }).then((currentToken) => {
         if (currentToken) {
           // BAŞARILI! TOKEN'I EKRANA YAZDIRMA
           subtitleElement.textContent = currentToken;
@@ -1248,3 +1248,5 @@ function requestPermission() {
 </script>
 </body>
 </html>
+
+  
