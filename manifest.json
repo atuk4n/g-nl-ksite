@@ -1,35 +1,23 @@
-// Gelişmiş Kart Kontrolü: Dışarı tıklayınca kapat ve arka planı kilitle
-    document.addEventListener('click', (event) => {
-        const visibleCard = document.querySelector('.memory-card.is-visible');
-        
-        if (visibleCard) { // Eğer açık bir kart varsa...
-            const isClickInsideCard = visibleCard.contains(event.target);
-            const isClickOnStar = event.target.classList.contains('memory-star');
-
-            // Eğer tıklama kartın veya bir yıldızın DIŞINDAYSA kartı kapat
-            if (!isClickInsideCard && !isClickOnStar) {
-                visibleCard.classList.remove('is-visible');
-                // İlgili yıldızın aktif durumunu da kaldır
-                document.querySelector('.memory-star.is-active')?.classList.remove('is-active');
-            }
-        }
-    });
-
-    // Kartların durumuna göre arka planı kilitlemek için bir gözlemci
-    const cardObserver = new MutationObserver((mutations) => {
-        for (let mutation of mutations) {
-            if (mutation.attributeName === 'class') {
-                const cardIsVisible = document.querySelector('.memory-card.is-visible');
-                if (cardIsVisible) {
-                    document.body.style.overflow = 'hidden'; // Kaydırmayı kilitle
-                } else {
-                    document.body.style.overflow = ''; // Kilidi aç
-                }
-            }
-        }
-    });
-
-    // Gözlemciyi tüm kartları izlemesi için ayarla
-    document.querySelectorAll('.memory-card').forEach(card => {
-        cardObserver.observe(card, { attributes: true });
-    });
+{
+  "name": "Bitaneme 💌",
+  "short_name": "Bitaneme",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#18142c",
+  "theme_color": "#18142c",
+  "description": "Her gün farklı bir dilden sevgi mesajın.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
